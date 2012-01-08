@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+@using(var form = Html.BeginForm())
+{
+<div id="logincontainer" class="box">
+    <div class="header">
+           <h2>Inloggen</h2>
+    </div>
+    <div class="content">
+        <p>Wanneer je op &eacute;&eacute;n van de volgende websites een account hebt, klik dan op het logo om in te loggen:</p>
+        <div class="provider">
+            <h5>Facebook</h5>
+            <a href="@Url.Action("Login", new{returnUrl = ViewBag.ReturnUrl, type="facebook"})"><img alt="Facebook" src="/Content/images/providers/facebook.jpg?width=170&height=70" /></a>
+        </div>
+        <div class="provider">
+            <h5>Gmail</h5>
+            <a href="@Url.Action("Login", new{returnUrl = ViewBag.ReturnUrl, type="google"})"><img alt="Gmail" src="/Content/images/providers/gmail.png?width=170&height=70" /></a>
+        </div>
+        <div class="provider">
+            <h5>Twitter</h5>
+            <a href="@Url.Action("Login", new{returnUrl = ViewBag.ReturnUrl, type="twitter"})"><img alt="Twitter" src="/Content/images/providers/twitter.jpg?width=170&height=70" /></a>
+        </div>
+        <div class="provider">
+            <h5>Windows Live</h5>
+            <a href="@Url.Action("Login", new{returnUrl = ViewBag.ReturnUrl, type="windowslive"})"><img alt="Windows Live" src="/Content/images/providers/winlive.jpg?width=170&height=70" /></a>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+}

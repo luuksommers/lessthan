@@ -1,2 +1,19 @@
+# Folders #
+###################
 LessThan/bin
 LessThan/obj
+_ReSharper.LessThan
+layout
+TestResults
+
+# FileGroups #
+############
+*.user
+
+# Logs and databases #
+######################
+
+
+# OS generated files #
+######################
+Thumbs.db

@@ -3,7 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessThan", "LessThan\LessThan.csproj", "{37A12D49-6D3C-4744-80FD-ADBA37404FC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessThan.Authorization", "LessThan.Authorization\LessThan.Authorization.csproj", "{E6C23F13-058B-4722-997C-D39CD76A9A4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LessThan.Tests", "LessThan.Tests\LessThan.Tests.csproj", "{5CC626AD-0576-4636-948E-3CDF12855CF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFE0AD1A-8635-4EF7-A50A-BF064F2E46C7}"
+	ProjectSection(SolutionItems) = preProject
+		LessThan.vsmdi = LessThan.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LessThan.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -13,6 +27,14 @@ Global
 		{37A12D49-6D3C-4744-80FD-ADBA37404FC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37A12D49-6D3C-4744-80FD-ADBA37404FC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37A12D49-6D3C-4744-80FD-ADBA37404FC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6C23F13-058B-4722-997C-D39CD76A9A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6C23F13-058B-4722-997C-D39CD76A9A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6C23F13-058B-4722-997C-D39CD76A9A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6C23F13-058B-4722-997C-D39CD76A9A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CC626AD-0576-4636-948E-3CDF12855CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CC626AD-0576-4636-948E-3CDF12855CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CC626AD-0576-4636-948E-3CDF12855CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CC626AD-0576-4636-948E-3CDF12855CF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

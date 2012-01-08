@@ -1,0 +1,11 @@
+﻿@using System.Security.Cryptography
+@using System.Text
+
+@helper Display(string emailAddress, int width)
+{
+    using (MD5 md5 = MD5.Create())
+    {
+        string hash = BitConverter.ToString(md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes((emailAddress ?? string.Empty).ToLower().Trim()))).Replace("-", string.Empty).ToLower();
+        <img src="http://www.gravatar.com/avatar/@hash?s=@width" alt="Gravatar of @emailAddress" />
+    }
+}

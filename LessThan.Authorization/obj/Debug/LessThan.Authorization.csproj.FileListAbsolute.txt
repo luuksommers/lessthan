@@ -1,0 +1,14 @@
+D:\Dropbox\Dev\lessthan\LessThan.Authorization\obj\Debug\ResolveAssemblyReference.cache
+D:\Dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\LessThan.Authorization.dll
+D:\Dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\LessThan.Authorization.pdb
+D:\Dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\DotNetOpenAuth.dll
+D:\Dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\DotNetOpenAuth.xml
+D:\Dropbox\Dev\lessthan\LessThan.Authorization\obj\Debug\LessThan.Authorization.dll
+D:\Dropbox\Dev\lessthan\LessThan.Authorization\obj\Debug\LessThan.Authorization.pdb
+E:\dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\LessThan.Authorization.dll
+E:\dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\LessThan.Authorization.pdb
+E:\dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\DotNetOpenAuth.dll
+E:\dropbox\Dev\lessthan\LessThan.Authorization\bin\Debug\DotNetOpenAuth.xml
+E:\dropbox\Dev\lessthan\LessThan.Authorization\obj\Debug\ResolveAssemblyReference.cache
+E:\dropbox\Dev\lessthan\LessThan.Authorization\obj\Debug\LessThan.Authorization.dll
+E:\dropbox\Dev\lessthan\LessThan.Authorization\obj\Debug\LessThan.Authorization.pdb

@@ -1,0 +1,20 @@
+﻿@{
+    Layout = null;
+}
+<nav>
+    @if (Request.IsAuthenticated)
+    {
+        <ul>
+        
+            <li class="user"><a href="#"><div class="img">@Gravatar.Display(Request.Cookies["gravatar"] != null ? Request.Cookies["gravatar"].Value : "", 50)</div>@(Request.Cookies["name"] != null ? Request.Cookies["name"].Value : "You")</a>
+                <ul>
+                    <li>@Html.ActionLink("Tasks", "Index", "Tasks", null, new { @class = "tasks" })</li>
+                    <li>@Html.ActionLink("Profiel", "Index", "Me", null, new { @class = "profile" })</li>
+                    <li>@Html.ActionLink("Teams", "Index", "Teams", null, new { @class = "teams" })</li>
+                    <li>@Html.ActionLink("Profiel", "Index", "Settings", null, new { @class = "settings" })</li>
+                </ul>
+            </li>
+            <li>@Html.ActionLink("Uitloggen", "Index", "Logout")</li>
+        </ul>
+    }
+</nav>

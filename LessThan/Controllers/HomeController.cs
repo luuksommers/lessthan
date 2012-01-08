@@ -10,8 +10,11 @@ namespace LessThan.Controllers
     {
         public ActionResult Index()
         {
+            if(Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Tasks");
+            }
             return View();
         }
-
     }
 }

@@ -1,0 +1,211 @@
+﻿@model LessThan.Models.Task[]
+
+@{
+    ViewBag.Title = "Takenlijst";
+}
+
+<script type="text/javascript">
+    $(function () {
+        var initializeSignalR = function () {
+            var connection = $.connection('/echo');
+            connection.received(function (data) {
+                console.log(data);
+                if (data.func == 'TimerStart') {
+                    $('div#task_' + data.task).effect("highlight", {}, 1000);
+                }
+                if (data.func == 'Add') {
+                    // add data.task to list!
+                }
+            });
+
+            connection.start();
+        };
+        initializeSignalR();
+    });
+</script>
+
+
+
+<div id="resultset"> 
+    <h1>TODO</h1>
+    <div class="box">
+        <div class="header">
+            <h2>Taken van <a href="#">@@thijskramer</a></h2>
+        </div>
+        <div class="content" data-bind="template: { name: 'tasktemplate', foreach: tasks}, visible: tasks().length > 0">
+
+        </div>
+        <div class="content" data-bind="visible: tasks().length == 0">
+            <p>Geen taken gevonden</p>
+        </div>
+        <div class="content addtaskform">
+            <p>Snel toevoegen:</p>
+            <form data-bind="submit: addTask" action="">
+                <input type="text" value="" data-bind="value: newTaskText" />
+                <!--<input type="submit" value="Toevoegen"/>-->
+            </form>
+            <table>
+                <tr>
+                    <td><strong>#</strong></td>
+                    <td>Project</td>
+                    <td><strong>!</strong></td>
+                    <td>Prioriteit</td>
+                </tr>
+                <tr>
+                    <td><strong>@@</strong></td>
+                    <td>Verantwoordelijke</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><strong>^</strong></td>
+                    <td>Deadline</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><strong>=</strong></td>
+                    <td>Urenschatting (=3.5h, =30m</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tasktemplate">
+    <div class="task" data-bind="css: {'done': isDone}">
+        <table>
+            <tr>
+               <!--<td>Prio</td>-->
+                <td class="marker">
+                    <input type="checkbox" data-bind="checked: isDone" />
+                </td>
+                <td class="tags">
+                    <span class="tag yellow" data-bind="text: project"></span>
+                </td>
+                <td class="description"  data-bind="click: toggleDone">
+                    <p data-bind="text: description"></p>
+                </td>
+                <td class="due" data-bind="text: dueDate, attr: {title:realDueDate}, click: toggleDone"></td>
+                <td class="estimate" data-bind="click: toggleDone"><span data-bind="text: estimate"></span> uur</td>
+                <td class="timetrack">
+                    <a href="" class="startbutton" data-bind="click: startStop, clickBubble: false, css: {working: isStarted}, visible: !isDone()"><span class="icon"></span><span class="label" data-bind="text: startStopButtonText"></span></a>
+                    <a href="" class="editbutton" data-bind="click: editOrSaveTime, clickBubble: false, css: {editing: editMode}, visible: isDone()"><span class="icon"></span><span class="label">&nbsp;</span></a><input type="text" data-bind="value: timeSpentField, enable: (isDone() && editMode())" />
+                </td>
+            </tr>
+        </table>
+        <div class="bottom"></div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    function Task(data) {
+        var self = this;
+        var timer;
+        self.id = ko.observable(data.Id);
+        self.description = ko.observable(data.TaskDescription);
+        self.isDone = ko.observable(data.IsDone);
+        self.project = ko.observable(data.Project);
+        self.dueDate = ko.observable(data.FriendlyDueDate);
+        self.realDueDate = ko.observable(data.FormattedDueDate);
+        self.estimate = ko.observable(data.EstimatedTimeInHours);
+        self.isStarted = ko.observable(data.IsStarted);
+        self.timeSpent = ko.observable(data.TimeSpent);
+        self.datestarted = ko.observable(data.DateStartTimestamp);
+        self.editMode = ko.observable(data.TimeSpent == 0);
+        self.editOrSaveTime = function () {
+            self.editMode(!self.editMode());
+        };
+        self.timeSpentField = ko.computed({
+            read: function () {
+                var h = Math.floor(self.timeSpent() / 60);
+                var m = self.timeSpent() - (h * 60);
+                if (m < 10) {
+                    return h + ":0" + m;
+                }
+                return h + ":" + m;
+            },
+            write: function (value) {
+                //possible values: 3:22, 0,75, 0.85, 0:56, 2
+                var h = 0;
+                var m = 0;
+                if (value.indexOf(',') >= 0) {
+                    value = value.replace(",", ".");
+                }
+                if (value.indexOf('.') >= 0) {
+                    var floatVal = parseFloat(value);
+                    m = Math.round(60 * floatVal);
+                }
+                else if (value.indexOf(":") >= 0) {
+                    var splitted = value.split(":");
+                    h = parseInt(splitted[0], 10);
+                    m = parseInt(splitted[1], 10);
+                }
+                else {
+                    value = parseInt(value);
+                    if (parseInt.toString() != "NaN") {
+                        m = Math.round(60 * value);
+                    }
+                }
+                var spent = (h * 60) + m;
+                self.timeSpent(spent);
+                self.editMode(false);
+                $.post("/tasks/savetime", { id: self.id(), minutes: spent });
+            }
+        });
+        self.toggleDone = function () {
+            if (!self.isStarted()) {
+                self.isDone(!self.isDone());
+                if (self.timeSpent == 0) {
+                    self.editMode(true);
+                }
+                $.uniform.update();
+                $.post("/tasks/togglecomplete", { id: self.id(), done: self.isDone() });
+            }
+        };
+        self.startStop = function () {
+            $.post("/tasks/toggletimer", { id: self.id(), start: (self.isStarted() == false) }, function(time) {
+                self.timeSpent(time);
+            });
+            self.isStarted(!self.isStarted());
+        };
+        self.startStopButtonText = ko.computed(function () {
+            return self.isStarted() ? "stop" : "start";
+        });
+    }
+
+    function TaskListViewModel() {
+        // Data
+        var self = this;
+        self.tasks = ko.observableArray([]);
+        self.newTaskText = ko.observable("");
+        self.incompleteTasks = ko.computed(function () {
+            return ko.utils.arrayFilter(self.tasks(), function (task) { return !task.isDone(); });
+        });
+
+        // Operations
+        self.addTask = function () {
+            //self.tasks.push(new Task({ title: this.newTaskText() }));
+            // send task to controller.
+            $.post("tasks/add", { rawtask: self.newTaskText() }, function (data) {
+                self.tasks.push(new Task(data));
+                self.newTaskText("");
+            });
+
+        };
+        self.removeTask = function (task) { self.tasks.remove(task); };
+
+        $.getJSON("tasks/getall", function (data) {
+            var mappedTasks = $.map(data, function (item) { return new Task(item); });
+            self.tasks(mappedTasks);
+            $("select, input[type='checkbox'], input[type='radio'], input[type='file']").uniform();
+        });
+    }
+
+    ko.applyBindings(new TaskListViewModel());
+    
+
+</script>

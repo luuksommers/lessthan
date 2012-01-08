@@ -1,0 +1,50 @@
+﻿@using LessThan.Authorization
+@using LessThan.Helpers
+@model LessThan.Models.UserProfile
+@{
+    ViewBag.Title = "User Profile";
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#@Html.GetHtmlIdFor(a => a.UserName)').blur(function () {
+            $.ajax({
+                url: '@Url.Action("Update")',
+                data: $('#userprofileform').serialize(),
+                success: function (result) {
+                    $('#message').html(result.msg + ' ');
+                    $('.undo').click(function () {
+                        $.ajax({
+                            url: '@Url.Action("Undo")',
+                            success: function (result) {
+                                $('#message').html(result.msg);
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    }); 
+
+</script>
+<div class="box">
+    <div class="header">
+        <h2>Welkom by je profiel</h2>
+    </div>
+    <div id="message"></div>
+    <div class="content">
+        <form id="userprofileform">
+        <p>
+            @Gravatar.Display(Model.EmailAddress, 150)<br />
+            @Model.FullName
+            <br />
+            @Model.EmailAddress
+            <br />
+            @Html.TextBoxFor(a => a.UserName)
+        </p>
+        </form>
+        <p>
+            @Html.ActionLink("Teams", "Index", "Teams")
+        </p>
+    </div>
+</div>

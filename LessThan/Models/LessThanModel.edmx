@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="db6262ebaa8cd446cb94999fc0013ff373Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="db6262ebaa8cd446cb94999fc0013ff373ModelStoreContainer">
+          <EntitySet Name="Task" EntityType="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Task" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Team" EntityType="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Team" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfile" EntityType="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfileLogin" EntityType="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfileLogin" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfileTeam" EntityType="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfileTeam" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Task_Creator" Association="db6262ebaa8cd446cb94999fc0013ff373Model.Store.FK_Task_Creator">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_ParentTask" Association="db6262ebaa8cd446cb94999fc0013ff373Model.Store.FK_Task_ParentTask">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Task1" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Team" Association="db6262ebaa8cd446cb94999fc0013ff373Model.Store.FK_Task_Team">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfileLogin_UserProfile" Association="db6262ebaa8cd446cb94999fc0013ff373Model.Store.FK_UserProfileLogin_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="UserProfileLogin" EntitySet="UserProfileLogin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfileTeam_Team" Association="db6262ebaa8cd446cb94999fc0013ff373Model.Store.FK_UserProfileTeam_Team">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="UserProfileTeam" EntitySet="UserProfileTeam" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfileTeam_UserProfile" Association="db6262ebaa8cd446cb94999fc0013ff373Model.Store.FK_UserProfileTeam_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="UserProfileTeam" EntitySet="UserProfileTeam" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Project" Type="nvarchar" MaxLength="100" />
+          <Property Name="TaskDescription" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="AssignedTo" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="IsDone" Type="bit" Nullable="false" />
+          <Property Name="EstimatedTime" Type="time" />
+          <Property Name="TimeSpent" Type="time" Nullable="false" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="TeamId" Type="int" />
+          <Property Name="CreatorId" Type="int" Nullable="false" />
+          <Property Name="ParentTaskId" Type="int" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeamName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="InvitationCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="FullName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="EmailAddress" Type="nvarchar" Nullable="false" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="UserProfileLogin">
+          <Key>
+            <PropertyRef Name="UniqueIdentifier" />
+          </Key>
+          <Property Name="UniqueIdentifier" Type="nvarchar" Nullable="false" MaxLength="300" />
+          <Property Name="UserProfileId" Type="int" />
+        </EntityType>
+        <EntityType Name="UserProfileTeam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeamId" Type="int" Nullable="false" />
+          <Property Name="UserProfileId" Type="int" Nullable="false" />
+          <Property Name="IsTeamAdministrator" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Task_Creator">
+          <End Role="UserProfile" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfile" Multiplicity="1" />
+          <End Role="Task" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_ParentTask">
+          <End Role="Task" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Task" Multiplicity="0..1" />
+          <End Role="Task1" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task1">
+              <PropertyRef Name="ParentTaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Team">
+          <End Role="Team" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Team" Multiplicity="0..1" />
+          <End Role="Task" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfileLogin_UserProfile">
+          <End Role="UserProfile" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfile" Multiplicity="0..1" />
+          <End Role="UserProfileLogin" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfileLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfileLogin">
+              <PropertyRef Name="UserProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfileTeam_Team">
+          <End Role="Team" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.Team" Multiplicity="1" />
+          <End Role="UserProfileTeam" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfileTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfileTeam">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfileTeam_UserProfile">
+          <End Role="UserProfile" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfile" Multiplicity="1" />
+          <End Role="UserProfileTeam" Type="db6262ebaa8cd446cb94999fc0013ff373Model.Store.UserProfileTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfileTeam">
+              <PropertyRef Name="UserProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="LessThanDatabase" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tasks" EntityType="Model.Task" />
+          <EntitySet Name="Teams" EntityType="Model.Team" />
+          <EntitySet Name="UserProfiles" EntityType="Model.UserProfile" />
+          <EntitySet Name="UserProfileLogins" EntityType="Model.UserProfileLogin" />
+          <EntitySet Name="UserProfileTeams" EntityType="Model.UserProfileTeam" />
+          <AssociationSet Name="FK_Task_Creator" Association="Model.FK_Task_Creator">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_ParentTask" Association="Model.FK_Task_ParentTask">
+            <End Role="Task" EntitySet="Tasks" />
+            <End Role="Task1" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Team" Association="Model.FK_Task_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfileTeam_Team" Association="Model.FK_UserProfileTeam_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="UserProfileTeam" EntitySet="UserProfileTeams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfileLogin_UserProfile" Association="Model.FK_UserProfileLogin_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="UserProfileLogin" EntitySet="UserProfileLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProfileTeam_UserProfile" Association="Model.FK_UserProfileTeam_UserProfile">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="UserProfileTeam" EntitySet="UserProfileTeams" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Project" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TaskDescription" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="AssignedTo" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" />
+          <Property Type="Boolean" Name="IsDone" Nullable="false" />
+          <Property Type="Time" Name="EstimatedTime" />
+          <Property Type="Time" Name="TimeSpent" Nullable="false" />
+          <Property Type="DateTime" Name="DueDate" />
+          <Property Type="Int32" Name="TeamId" />
+          <Property Type="Int32" Name="CreatorId" Nullable="false" />
+          <Property Type="Int32" Name="ParentTaskId" />
+          <NavigationProperty Name="UserProfile" Relationship="Model.FK_Task_Creator" FromRole="Task" ToRole="UserProfile" />
+          <NavigationProperty Name="Task1" Relationship="Model.FK_Task_ParentTask" FromRole="Task" ToRole="Task1" />
+          <NavigationProperty Name="Task2" Relationship="Model.FK_Task_ParentTask" FromRole="Task1" ToRole="Task" />
+          <NavigationProperty Name="Team" Relationship="Model.FK_Task_Team" FromRole="Task" ToRole="Team" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="InvitationCode" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tasks" Relationship="Model.FK_Task_Team" FromRole="Team" ToRole="Task" />
+          <NavigationProperty Name="UserProfileTeams" Relationship="Model.FK_UserProfileTeam_Team" FromRole="Team" ToRole="UserProfileTeam" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tasks" Relationship="Model.FK_Task_Creator" FromRole="UserProfile" ToRole="Task" />
+          <NavigationProperty Name="UserProfileLogins" Relationship="Model.FK_UserProfileLogin_UserProfile" FromRole="UserProfile" ToRole="UserProfileLogin" />
+          <NavigationProperty Name="UserProfileTeams" Relationship="Model.FK_UserProfileTeam_UserProfile" FromRole="UserProfile" ToRole="UserProfileTeam" />
+        </EntityType>
+        <EntityType Name="UserProfileLogin">
+          <Key>
+            <PropertyRef Name="UniqueIdentifier" />
+          </Key>
+          <Property Type="String" Name="UniqueIdentifier" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="UserProfileId" />
+          <NavigationProperty Name="UserProfile" Relationship="Model.FK_UserProfileLogin_UserProfile" FromRole="UserProfileLogin" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="UserProfileTeam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="TeamId" Nullable="false" />
+          <Property Type="Int32" Name="UserProfileId" Nullable="false" />
+          <Property Type="Boolean" Name="IsTeamAdministrator" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="Model.FK_UserProfileTeam_Team" FromRole="UserProfileTeam" ToRole="Team" />
+          <NavigationProperty Name="UserProfile" Relationship="Model.FK_UserProfileTeam_UserProfile" FromRole="UserProfileTeam" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="FK_Task_Creator">
+          <End Type="Model.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="Model.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_ParentTask">
+          <End Type="Model.Task" Role="Task" Multiplicity="0..1" />
+          <End Type="Model.Task" Role="Task1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task1">
+              <PropertyRef Name="ParentTaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Team">
+          <End Type="Model.Team" Role="Team" Multiplicity="0..1" />
+          <End Type="Model.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfileTeam_Team">
+          <End Type="Model.Team" Role="Team" Multiplicity="1" />
+          <End Type="Model.UserProfileTeam" Role="UserProfileTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfileTeam">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfileLogin_UserProfile">
+          <End Type="Model.UserProfile" Role="UserProfile" Multiplicity="0..1" />
+          <End Type="Model.UserProfileLogin" Role="UserProfileLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfileLogin">
+              <PropertyRef Name="UserProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProfileTeam_UserProfile">
+          <End Type="Model.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="Model.UserProfileTeam" Role="UserProfileTeam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfileTeam">
+              <PropertyRef Name="UserProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db6262ebaa8cd446cb94999fc0013ff373ModelStoreContainer" CdmEntityContainer="LessThanDatabase">
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="Model.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="ParentTaskId" ColumnName="ParentTaskId" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="TimeSpent" ColumnName="TimeSpent" />
+                <ScalarProperty Name="EstimatedTime" ColumnName="EstimatedTime" />
+                <ScalarProperty Name="IsDone" ColumnName="IsDone" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+                <ScalarProperty Name="TaskDescription" ColumnName="TaskDescription" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="Model.Team">
+              <MappingFragment StoreEntitySet="Team">
+                <ScalarProperty Name="InvitationCode" ColumnName="InvitationCode" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="Model.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfileLogins">
+            <EntityTypeMapping TypeName="Model.UserProfileLogin">
+              <MappingFragment StoreEntitySet="UserProfileLogin">
+                <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
+                <ScalarProperty Name="UniqueIdentifier" ColumnName="UniqueIdentifier" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfileTeams">
+            <EntityTypeMapping TypeName="Model.UserProfileTeam">
+              <MappingFragment StoreEntitySet="UserProfileTeam">
+                <ScalarProperty Name="IsTeamAdministrator" ColumnName="IsTeamAdministrator" />
+                <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="LessThanModel">
+        <EntityTypeShape EntityType="Model.Task" Width="1.5" PointX="3" PointY="3.875" Height="4.0956022135416656" />
+        <EntityTypeShape EntityType="Model.Team" Width="1.5" PointX="0.75" PointY="2" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="Model.UserProfile" Width="1.5" PointX="0.75" PointY="4.75" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="Model.UserProfileLogin" Width="1.5" PointX="3" PointY="10" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="Model.UserProfileTeam" Width="1.5" PointX="6" PointY="4.875" Height="2.1725878906249996" />
+        <AssociationConnector Association="Model.FK_Task_Creator" >
+          <ConnectorPoint PointX="2.25" PointY="5.9324446614583337" />
+          <ConnectorPoint PointX="2.6666666666666665" PointY="5.9324446614583328" />
+          <ConnectorPoint PointX="2.8333333333333335" PointY="5.9324446614583337" />
+          <ConnectorPoint PointX="3" PointY="5.9324446614583337" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model.FK_Task_ParentTask" >
+          <ConnectorPoint PointX="3.5319230769230767" PointY="7.9706022135416656" />
+          <ConnectorPoint PointX="3.5319230769230767" PointY="8.2206022135416656" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="8.2206022135416656" />
+          <ConnectorPoint PointX="3.9784615384615383" PointY="7.9706022135416656" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model.FK_Task_Team" >
+          <ConnectorPoint PointX="2.25" PointY="2.9374995" />
+          <ConnectorPoint PointX="3.75" PointY="2.9374995" />
+          <ConnectorPoint PointX="3.75" PointY="3.875" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model.FK_UserProfileTeam_Team" >
+          <ConnectorPoint PointX="2.25" PointY="2.4374972499999989" />
+          <ConnectorPoint PointX="6.75" PointY="2.4374972499999989" />
+          <ConnectorPoint PointX="6.75" PointY="4.875" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model.FK_UserProfileLogin_UserProfile" >
+          <ConnectorPoint PointX="1.5" PointY="7.1148893229166674" />
+          <ConnectorPoint PointX="1.5" PointY="10.797841796875" />
+          <ConnectorPoint PointX="3" PointY="10.797841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model.FK_UserProfileTeam_UserProfile" >
+          <ConnectorPoint PointX="1.5" PointY="4.75" />
+          <ConnectorPoint PointX="1.5" PointY="4.5" />
+          <ConnectorPoint PointX="2.75" PointY="4.5" />
+          <ConnectorPoint PointX="2.75" PointY="8.4706022135416656" />
+          <ConnectorPoint PointX="5.625" PointY="8.4706022135416656" />
+          <ConnectorPoint PointX="5.625" PointY="5.9612939453125" />
+          <ConnectorPoint PointX="6" PointY="5.9612939453125" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

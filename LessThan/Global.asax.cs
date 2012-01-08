@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Routing;
+using LessThan.Models;
+using SignalR.Routing;
 
 namespace LessThan
 {
@@ -20,6 +19,14 @@ namespace LessThan
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            RouteTable.Routes.MapConnection<SignalREndPoint>("echo", "echo/{*operation}");
+
+            routes.MapRoute(
+                "Me", // Route name
+                "Me/{action}/{id}", // URL with parameters
+                new { controller = "User", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+            );
 
             routes.MapRoute(
                 "Default", // Route name
