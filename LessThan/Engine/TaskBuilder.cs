@@ -7,7 +7,7 @@ namespace LessThan.Engine
 {
     public class TaskBuilder
     {
-        public static string[] KeyTags = new string[]{"#", "^", "@", "!", "="};
+        public static string[] KeyTags = new[]{"#", "^", "@", "!", "="};
 
         public static Task CreateTask(string input)
         {
@@ -42,7 +42,7 @@ namespace LessThan.Engine
                 }
             }
 
-            var subject = string.Join(" ", splitted.Where(x => !KeyTags.Any(y=>x.StartsWith(y))));
+            var subject = string.Join(" ", splitted.Where(x => !KeyTags.Any(x.StartsWith)));
 
             return new Task { TaskDescription = subject, EstimatedTime = rawestimate, Project = project, AssignedTo = assignedto, DueDate = rawdeadline };
         }
@@ -61,7 +61,8 @@ namespace LessThan.Engine
                 {
                     estimatedHours = Convert.ToInt32(word.Substring(0, word.IndexOf('.')));
                     word = word.Remove(word.Length - 1);
-                    estimatedMinutes = Convert.ToInt32(Math.Truncate(60 * (Convert.ToDecimal("0," + word.Substring(word.IndexOf('.') + 1)))));
+
+                    estimatedMinutes = Convert.ToInt32(Math.Truncate(60 * (Convert.ToDecimal("0." + word.Substring(word.IndexOf('.') + 1), new CultureInfo("en-US")))));
                 }
                 else
                 {
