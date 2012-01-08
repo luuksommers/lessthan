@@ -208,7 +208,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\knockout.2.0.0.min.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -245,18 +247,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\Gravatar.cshtml" />
-    <None Include="Content\css\normalize.less">
+    <Content Include="Content\css\normalize.less">
       <Generator>LessGenerator</Generator>
       <LastGenOutput>normalize.css</LastGenOutput>
-    </None>
-    <None Include="Content\css\style.less">
+    </Content>
+    <Content Include="Content\css\style.less">
       <Generator>LessGenerator</Generator>
       <LastGenOutput>style.css</LastGenOutput>
-    </None>
-    <None Include="Content\css\uniform.less">
+    </Content>
+    <Content Include="Content\css\uniform.less">
       <Generator>LessGenerator</Generator>
       <LastGenOutput>uniform.css</LastGenOutput>
-    </None>
+    </Content>
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\UserMenu.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
